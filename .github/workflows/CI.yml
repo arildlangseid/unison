@@ -46,18 +46,18 @@ jobs:
       fail-fast: false
       matrix:
         job:
-#        - { os: macos-12      , ocaml-version: 4.14.0 }
-#        - { os: macos-10.15   , ocaml-version: 4.14.0           , publish: true }
-#        - { os: ubuntu-22.04  , ocaml-version: 4.14.0 }
-#        - { os: ubuntu-20.04  , ocaml-version: 4.14.0 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.14.0           , publish: true }
-#        - { os: ubuntu-18.04  , ocaml-version: "4.14.0+options,ocaml-option-musl,ocaml-option-static,ocaml-option-flambda"  , publish: true }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.13.1 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.12.1 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.11.2 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.10.2 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.09.1 }
-#        - { os: ubuntu-18.04  , ocaml-version: 4.08.1           , publish: true }
+        - { os: macos-12      , ocaml-version: 4.14.0 }
+        - { os: macos-10.15   , ocaml-version: 4.14.0           , publish: true }
+        - { os: ubuntu-22.04  , ocaml-version: 4.14.0 }
+        - { os: ubuntu-20.04  , ocaml-version: 4.14.0 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.14.0           , publish: true }
+        - { os: ubuntu-18.04  , ocaml-version: "4.14.0+options,ocaml-option-musl,ocaml-option-static,ocaml-option-flambda"  , publish: true }
+        - { os: ubuntu-18.04  , ocaml-version: 4.13.1 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.12.1 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.11.2 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.10.2 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.09.1 }
+        - { os: ubuntu-18.04  , ocaml-version: 4.08.1           , publish: true }
         - { os: windows-2022  , ocaml-version: 4.14.0+mingw64c  , publish: true }
         - { os: windows-2019  , ocaml-version: 4.14.0+mingw32c  , publish: true }
 
@@ -97,7 +97,7 @@ jobs:
         MSVC_ARCH='' ; case '${{ matrix.job.ocaml-version }}' in *+msvc32*) MSVC_ARCH='x86' ;; *+msvc64*) MSVC_ARCH='x64' ;; esac
         STATIC='false' ; case '${{ matrix.job.ocaml-version }}' in *-musl*) STATIC='true' ;; esac
         outputs EXE_suffix MinGW_ARCH MSVC_ARCH STATIC
-#        case '${{ matrix.job.os }}' in macos-*) echo "MACOSX_DEPLOYMENT_TARGET=10.6" >> $GITHUB_ENV ;; esac
+        case '${{ matrix.job.os }}' in macos-*) echo "MACOSX_DEPLOYMENT_TARGET=10.6" >> $GITHUB_ENV ;; esac
         # staging environment
         STAGING_DIR='_staging'
         outputs STAGING_DIR
@@ -344,31 +344,31 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#    - if: runner.os == 'macOS'
-#      name: "macOS: Build and package Unison.app"
-#      id: macapp
-#      run: |
-#        opam exec -- make src UISTYLE=mac
+    - if: runner.os == 'macOS'
+      name: "macOS: Build and package Unison.app"
+      id: macapp
+      run: |
+        opam exec -- make src UISTYLE=mac
 
-#        # package
-#        APP_NAME=Unison-${{ steps.vars.outputs.PKG_VER }}.ocaml-${{ matrix.job.ocaml-version }}.${{ matrix.job.os }}.app.tar.gz
-#        echo APP_NAME=${APP_NAME} >> $GITHUB_OUTPUT
+        # package
+        APP_NAME=Unison-${{ steps.vars.outputs.PKG_VER }}.ocaml-${{ matrix.job.ocaml-version }}.${{ matrix.job.os }}.app.tar.gz
+        echo APP_NAME=${APP_NAME} >> $GITHUB_OUTPUT
 
-#        tar czf ${APP_NAME} -C src/uimac/build/Default Unison.app
+        tar czf ${APP_NAME} -C src/uimac/build/Default Unison.app
 
-#    - if: runner.os == 'macOS'
-#      name: "macOS: Upload Unison.app artifact"
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: Unison-${{ steps.vars.outputs.REF_SHAS }}.ocaml-${{ matrix.job.ocaml-version }}.${{ matrix.job.os }}.app
-#        path: ${{ steps.macapp.outputs.APP_NAME }}
+    - if: runner.os == 'macOS'
+      name: "macOS: Upload Unison.app artifact"
+      uses: actions/upload-artifact@v3
+      with:
+        name: Unison-${{ steps.vars.outputs.REF_SHAS }}.ocaml-${{ matrix.job.ocaml-version }}.${{ matrix.job.os }}.app
+        path: ${{ steps.macapp.outputs.APP_NAME }}
 
-#    - if: runner.os == 'macOS' && steps.vars.outputs.DEPLOY && matrix.job.publish
-#      name: "macOS: Publish Unison.app"
-#      uses: softprops/action-gh-release@v1
-#      with:
-#        files: ${{ steps.macapp.outputs.APP_NAME }}
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - if: runner.os == 'macOS' && steps.vars.outputs.DEPLOY && matrix.job.publish
+      name: "macOS: Publish Unison.app"
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.macapp.outputs.APP_NAME }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
