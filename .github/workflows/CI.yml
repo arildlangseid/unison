@@ -10,37 +10,37 @@ on:
   - push
 
 jobs:
-  docs:
-    runs-on: ubuntu-20.04
+#  docs:
+#    runs-on: ubuntu-20.04
 
-    steps:
-    - run: sudo apt-get update
+#    steps:
+#    - run: sudo apt-get update
 
-    - name: Checkout code
-      uses: actions/checkout@v3
+#    - name: Checkout code
+#      uses: actions/checkout@v3
 
-    - name: Use OCaml
-      uses: ocaml/setup-ocaml@v2
-      with:
-        ocaml-compiler: 4.14.x
-        opam-depext: false
+#    - name: Use OCaml
+#      uses: ocaml/setup-ocaml@v2
+#      with:
+#        ocaml-compiler: 4.14.x
+#        opam-depext: false
 
-    - run: sudo apt-get install hevea lynx texlive-latex-base
+#    - run: sudo apt-get install hevea lynx texlive-latex-base
 
-    - run: opam exec -- make docs
+#    - run: opam exec -- make docs
 
-    - name: Store user manual for the build jobs
-      uses: actions/upload-artifact@v3
-      with:
-        name: unison-docs
-        path: |
-          doc/unison-manual.txt
-          doc/unison-manual.html
-          doc/unison-manual.pdf
+#    - name: Store user manual for the build jobs
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: unison-docs
+#        path: |
+#          doc/unison-manual.txt
+#          doc/unison-manual.html
+#          doc/unison-manual.pdf
 
   build:
-    if: ${{ !cancelled() }}    # Don't fail if 'docs' failed
-    needs: docs
+#    if: ${{ !cancelled() }}    # Don't fail if 'docs' failed
+#    needs: docs
 
     strategy:
       fail-fast: false
